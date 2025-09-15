@@ -16,9 +16,20 @@
           </p>
 
           <!-- Status Indicators -->
-          <div class="flex items-center justify-center space-x-6">
+          <div class="flex items-center justify-center space-x-6 mb-6">
             <StatusIndicator status="online" text="Live Updates" />
             <StatusIndicator status="active" :text="`${playerLeaderBoard.length} shrubbers`" />
+          </div>
+
+          <!-- Add Shrub Button -->
+          <div class="flex justify-center">
+            <Button
+              @click="showCreateModal = true"
+              class="bg-primary hover:bg-primary/90 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+            >
+              <Plus class="w-4 h-4 mr-2" />
+              Add Shrub
+            </Button>
           </div>
         </div>
       </div>
@@ -80,21 +91,54 @@
         <p class="text-gray-600">Be the first to join the shrubbing championship!</p>
       </div>
     </div>
+
+    <!-- Create Shrub Modal -->
+    <CreateShrubModal
+      v-model:open="showCreateModal"
+      :players="playerLeaderBoard"
+      :loading="createLoading"
+      @submit="handleCreateShrub"
+    />
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import { Trophy, AlertCircle } from 'lucide-vue-next'
+import { onMounted, ref } from 'vue'
+import { Trophy, AlertCircle, Plus } from 'lucide-vue-next'
 import { useLeaderboardStore } from '@/stores/leaderboard'
 import { storeToRefs } from 'pinia'
 import LeaderboardCard from '@/components/LeaderboardCard.vue'
 import StatusIndicator from '@/components/StatusIndicator.vue'
 import Card from '@/components/ui/Card.vue'
+import Button from '@/components/ui/Button.vue'
+import CreateShrubModal, { type ShrubFormData } from '@/components/CreateShrubModal.vue'
 
 const store = useLeaderboardStore()
 const { playerLeaderBoard, loading, error } = storeToRefs(store)
 const { fetchPlayers } = store
+
+// Modal state
+const showCreateModal = ref(false)
+const createLoading = ref(false)
+
+const handleCreateShrub = async (data: ShrubFormData) => {
+  createLoading.value = true
+  try {
+    // TODO: Implement API call to create shrub
+    console.log('Creating shrub:', data)
+
+    // Simulate API call
+    await new Promise(resolve => setTimeout(resolve, 1000))
+
+    // Close modal and refresh data
+    showCreateModal.value = false
+    await store.fetchPlayerLeaderBoard()
+  } catch (err) {
+    console.error('Failed to create shrub:', err)
+  } finally {
+    createLoading.value = false
+  }
+}
 
 onMounted(() => {
   store.fetchPlayerLeaderBoard()

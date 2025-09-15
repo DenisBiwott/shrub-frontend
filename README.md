@@ -48,6 +48,7 @@ src/
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Node.js ^20.19.0 || >=22.12.0
 - npm or yarn
 
@@ -83,20 +84,24 @@ npm run test:unit    # Run Vitest unit tests
 ## 🏗️ Key Components
 
 ### **LeaderboardCard.vue**
+
 - Displays player ranking with avatar, points, and trends
 - Dynamic rank badges (Crown, Trophy, Medal)
 - Highlight current user with special styling
 
 ### **PlayerAvatar.vue**
+
 - Generates colorful avatars from user names
 - Deterministic colors based on name hash
 - Multiple size variants (sm, md, lg)
 
 ### **StatusIndicator.vue**
+
 - Shows connection status with colored dots
 - Supports online, offline, and active states
 
 ### **Pinia Store (stores/leaderboard.ts)**
+
 - Manages player data and leaderboard state
 - Provides actions for adding players and recording shrubs
 - Computed properties for sorted rankings
@@ -104,16 +109,19 @@ npm run test:unit    # Run Vitest unit tests
 ## 🎨 Styling System
 
 ### **Tailwind CSS**
+
 - Utility-first CSS framework
 - Custom color palette defined in `tailwind.config.js`
 - Responsive design with mobile-first approach
 
 ### **shadcn-vue Components**
+
 - Copy-paste component library
 - Built with accessibility in mind
 - Customizable via CSS custom properties in `style.css`
 
 ### **Theme System**
+
 - CSS custom properties for colors (--primary, --secondary, etc.)
 - Dark mode ready (extend CSS variables)
 - Consistent spacing and typography scales
@@ -141,3 +149,5 @@ npm run test:unit    # Run Vitest unit tests
 - **Tablet**: `md:` (>= 768px)
 - **Desktop**: `lg:` (>= 1024px)
 - **Large**: `xl:` (>= 1280px)
+
+Sample UI: https://shrub-scribe-studio.lovable.app
