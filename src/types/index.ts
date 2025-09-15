@@ -8,6 +8,16 @@ export interface Player {
   totalShrubs: number
 }
 
+export interface PlayerLeaderBoard {
+  _id: string
+  name: string
+  shrubCount: number
+  totalPoints: number
+  voterCount: number
+  rank: number
+  latestShrub: string
+}
+
 export interface Shrub {
   id: string
   playerId: string

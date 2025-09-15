@@ -21,9 +21,10 @@
             <component :is="rankIcon" v-if="rankIcon" class="w-4 h-4" />
             <span v-else>#{{ rank }}</span>
           </div>
-          <TrendingUp v-if="player.trend === 'up'" class="w-3 h-3 text-green-500 mt-1" />
+          <!-- <TrendingUp v-if="player.trend === 'up'" class="w-3 h-3 text-green-500 mt-1" />
           <TrendingDown v-if="player.trend === 'down'" class="w-3 h-3 text-red-500 mt-1" />
-          <Minus v-if="player.trend === 'same'" class="w-3 h-3 text-gray-400 mt-1" />
+          <Minus v-if="player.trend === 'same'" class="w-3 h-3 text-gray-400 mt-1" /> -->
+          <TrendingUp class="w-3 h-3 text-green-500 mt-1" />
         </div>
 
         <PlayerAvatar :name="player.name" size="md" />
@@ -34,7 +35,7 @@
             <Star v-if="rank <= 3" class="w-4 h-4 text-yellow-500 fill-yellow-500" />
             <Badge v-if="isCurrentUser" variant="secondary" class="text-xs">You</Badge>
           </div>
-          <p v-if="player.latestShrub" class="text-sm text-gray-600">
+          <p v-if="player?.latestShrub" class="text-sm text-gray-600">
             Latest: "{{ player.latestShrub }}"
           </p>
         </div>
@@ -51,15 +52,16 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { Crown, Trophy, Medal, Star, TrendingUp, TrendingDown, Minus } from 'lucide-vue-next'
+// , TrendingUp, TrendingDown, Minus
+import { Crown, Trophy, Medal, Star, TrendingUp } from 'lucide-vue-next'
 import { cn } from '@/lib/utils'
 import Card from './ui/Card.vue'
 import Badge from './ui/Badge.vue'
 import PlayerAvatar from './PlayerAvatar.vue'
-import type { Player } from '@/types'
+import type { PlayerLeaderBoard } from '@/types'
 
 interface Props {
-  player: Player
+  player: PlayerLeaderBoard
   rank: number
   isCurrentUser?: boolean
 }
@@ -71,7 +73,7 @@ const displayName = computed(() => {
 })
 
 const formattedPoints = computed(() => {
-  return new Intl.NumberFormat().format(player.points)
+  return new Intl.NumberFormat().format(player.totalPoints)
 })
 
 const rankIcon = computed(() => {

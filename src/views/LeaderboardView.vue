@@ -7,18 +7,18 @@
           <!-- Trophy Icon + Title -->
           <div class="flex items-center justify-center space-x-3 mb-4">
             <Trophy class="w-12 h-12 text-primary" />
-            <h1 class="text-4xl font-bold text-primary">Shrubber</h1>
+            <h1 class="text-4xl font-bold text-primary">Shrub Leaderboard</h1>
           </div>
 
           <!-- Subtitle -->
           <p class="text-lg text-gray-600 mb-6">
-            The ultimate leaderboard for the most creative word manglers and pronunciation artists
+            The mind is willing but the toungue is weak — Shrubs never go noticed by the goats!
           </p>
 
           <!-- Status Indicators -->
           <div class="flex items-center justify-center space-x-6">
             <StatusIndicator status="online" text="Live Updates" />
-            <StatusIndicator status="active" :text="`${activeUsers} Active Shrubbers`" />
+            <StatusIndicator status="active" :text="`${playerLeaderBoard.length} shrubbers`" />
           </div>
         </div>
       </div>
@@ -64,8 +64,8 @@
       <!-- Leaderboard -->
       <div v-else class="space-y-4">
         <LeaderboardCard
-          v-for="(player, index) in sortedPlayers"
-          :key="player.id"
+          v-for="(player, index) in playerLeaderBoard"
+          :key="player._id"
           :player="player"
           :rank="index + 1"
           :is-current-user="player.name === 'You'"
@@ -74,7 +74,7 @@
       </div>
 
       <!-- Empty State -->
-      <div v-if="!loading && !error && sortedPlayers.length === 0" class="text-center py-12">
+      <div v-if="!loading && !error && playerLeaderBoard.length === 0" class="text-center py-12">
         <Trophy class="w-16 h-16 mx-auto mb-4 text-gray-400" />
         <h3 class="text-lg font-semibold text-gray-900 mb-2">No players yet</h3>
         <p class="text-gray-600">Be the first to join the shrubbing championship!</p>
@@ -91,13 +91,12 @@ import { storeToRefs } from 'pinia'
 import LeaderboardCard from '@/components/LeaderboardCard.vue'
 import StatusIndicator from '@/components/StatusIndicator.vue'
 import Card from '@/components/ui/Card.vue'
-import { apiService } from '@/services/api'
 
 const store = useLeaderboardStore()
-const { sortedPlayers, loading, error, activeUsers } = storeToRefs(store)
+const { playerLeaderBoard, loading, error } = storeToRefs(store)
 const { fetchPlayers } = store
 
 onMounted(() => {
-  store.initializeMockData()
+  store.fetchPlayerLeaderBoard()
 })
 </script>

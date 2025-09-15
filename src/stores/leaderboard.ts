@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import type { Player, LeaderboardState } from '@/types'
+import type { Player, PlayerLeaderBoard } from '@/types'
 import { apiService } from '@/services/api'
 
 export const useLeaderboardStore = defineStore('leaderboard', () => {
@@ -8,55 +8,7 @@ export const useLeaderboardStore = defineStore('leaderboard', () => {
   const loading = ref(false)
   const error = ref<string | null>(null)
   const activeUsers = ref(247)
-
-  // Mock data for development
-  const mockPlayers: Player[] = [
-    {
-      id: '1',
-      name: 'ShrubMaster3000',
-      points: 15420,
-      latestShrub: 'Absolutely instead of Obviously',
-      createdAt: new Date('2024-01-15'),
-      trend: 'up',
-      totalShrubs: 154,
-    },
-    {
-      id: '2',
-      name: 'WordWrangler',
-      points: 14230,
-      latestShrub: 'Refrigerator instead of Elevator',
-      createdAt: new Date('2024-01-10'),
-      trend: 'same',
-      totalShrubs: 142,
-    },
-    {
-      id: '3',
-      name: 'PronunciationPro',
-      points: 13890,
-      latestShrub: 'Chocolate instead of Hospital',
-      createdAt: new Date('2024-01-12'),
-      trend: 'up',
-      totalShrubs: 139,
-    },
-    {
-      id: '4',
-      name: 'You',
-      points: 12150,
-      latestShrub: 'Spaghetti instead of Especially',
-      createdAt: new Date('2024-01-18'),
-      trend: 'up',
-      totalShrubs: 122,
-    },
-    {
-      id: '5',
-      name: 'VowelVoyager',
-      points: 11780,
-      latestShrub: 'Butterfly instead of Beautiful',
-      createdAt: new Date('2024-01-14'),
-      trend: 'down',
-      totalShrubs: 118,
-    },
-  ]
+  const playerLeaderBoard = ref<PlayerLeaderBoard[]>([])
 
   const sortedPlayers = computed(() => {
     return [...players.value].sort((a, b) => b.points - a.points)
@@ -67,21 +19,30 @@ export const useLeaderboardStore = defineStore('leaderboard', () => {
     return currentUser ? sortedPlayers.value.indexOf(currentUser) + 1 : null
   })
 
-  function initializeMockData() {
-    players.value = mockPlayers
-  }
-
   async function fetchPlayers() {
     loading.value = true
     error.value = null
 
     try {
-      // For now, use mock data
-      await new Promise((resolve) => setTimeout(resolve, 500))
-      players.value = mockPlayers
+      // Eventually wire APIs
+      players.value = []
     } catch (err) {
       error.value = 'Failed to fetch players'
       console.error(err)
+    } finally {
+      loading.value = false
+    }
+  }
+
+  // Fetch player leaderboard
+  async function fetchPlayerLeaderBoard() {
+    loading.value = true
+    error.value = null
+    try {
+      playerLeaderBoard.value = await apiService.getPlayerLeaderBoard()
+    } catch (err) {
+      console.error(err)
+      error.value = 'Failed to fetch player leaderboard'
     } finally {
       loading.value = false
     }
@@ -131,11 +92,12 @@ export const useLeaderboardStore = defineStore('leaderboard', () => {
     activeUsers,
     sortedPlayers,
     currentUserRank,
-    initializeMockData,
+    playerLeaderBoard,
     fetchPlayers,
     addPlayer,
     recordShrub,
     updatePlayer,
     deletePlayer,
+    fetchPlayerLeaderBoard,
   }
 })

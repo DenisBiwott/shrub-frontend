@@ -1,5 +1,5 @@
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001'
-console.log('API_BASE_URL:', API_BASE_URL);
+console.log('API_BASE_URL:', API_BASE_URL)
 
 export interface ApiPlayer {
   _id: string
@@ -20,6 +20,16 @@ export interface ApiShrub {
   voters: string[]
   createdAt: string
   updatedAt: string
+}
+
+export interface ApiPlayerLeaderBoard {
+  _id: string
+  name: string
+  shrubCount: number
+  totalPoints: number
+  voterCount: number
+  rank: number
+  latestShrub: string
 }
 
 class ApiService {
@@ -45,7 +55,7 @@ class ApiService {
     return this.fetch('/players')
   }
 
-  async getLeaderboard(): Promise<ApiPlayer[]> {
+  async getPlayerLeaderBoard(): Promise<ApiPlayerLeaderBoard[]> {
     return this.fetch('/players/leaderboard')
   }
 
